@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ia-bg: #ffffff;
+  --ia-cream: #f6f2ea;
+  --ia-ink: #111111;
+  --ia-orange: #e8451e;
+  --ia-yellow: #ffe65c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  background-color: var(--ia-bg);
+  color: var(--ia-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ia-ink);
+}
+
+/* Subtle paper grain on cream sections */
+.bg-paper {
+  background-color: var(--ia-cream);
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+@layer components {
+  /* Buttons */
+  .btn-apply {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-ia-ink bg-white px-6 py-2.5 text-sm font-semibold text-ia-ink transition hover:bg-ia-ink hover:text-white focus:outline-none focus:ring-2 focus:ring-ia-ink focus:ring-offset-2;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ia-orange px-6 py-3 text-sm font-semibold text-white shadow-cta transition hover:bg-ia-orange-2 focus:outline-none focus:ring-2 focus:ring-ia-orange focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-ia-ink bg-white px-5 py-2.5 text-sm font-semibold text-ia-ink transition hover:bg-ia-ink hover:text-white focus:outline-none focus:ring-2 focus:ring-ia-ink;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-ia-muted transition hover:text-ia-ink;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-2xl border border-ia-line bg-white;
+  }
+  .card-soft {
+    @apply rounded-2xl border border-ia-line bg-white shadow-soft;
+  }
+
+  /* Forms */
+  .input {
+    @apply w-full rounded-xl border border-ia-line bg-white px-4 py-2.5 text-sm text-ia-ink placeholder:text-ia-muted-2 focus:border-ia-ink focus:outline-none focus:ring-2 focus:ring-ia-ink/10;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-ia-muted;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center rounded-full border border-ia-line bg-white px-3 py-1 text-xs font-medium text-ia-ink-2;
+  }
+  .badge-orange {
+    @apply inline-flex items-center rounded-full border border-ia-orange/30 bg-ia-orange/10 px-3 py-1 text-xs font-semibold text-ia-orange;
+  }
+  .badge-yellow {
+    @apply inline-flex items-center rounded-full border border-ia-yellow/60 bg-ia-yellow/40 px-3 py-1 text-xs font-semibold text-ia-ink;
+  }
+
+  /* Nav link */
+  .nav-link {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-ia-ink/85 transition hover:text-ia-orange;
+  }
+  .nav-link-active {
+    @apply text-ia-orange;
+  }
+
+  /* Section title */
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ia-orange;
+  }
+}
+
+/* Yellow marker highlight behind keywords */
+.hl {
+  background-image: linear-gradient(
+    180deg,
+    transparent 55%,
+    var(--ia-yellow) 55%,
+    var(--ia-yellow) 92%,
+    transparent 92%
+  );
+  padding: 0 0.12em;
+}
+
+/* Colored accent underline bars for stat numbers */
+.stat-bar {
+  display: inline-block;
+  height: 4px;
+  width: 96px;
+  border-radius: 999px;
+  margin-top: 8px;
+}
+
+/* Rotating spin for spinners */
+@keyframes ia-spin {
+  to { transform: rotate(360deg); }
+}
+.ia-spin {
+  animation: ia-spin 0.9s linear infinite;
+}
