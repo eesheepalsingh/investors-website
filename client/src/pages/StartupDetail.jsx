@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/axios.js';
 import CalendlyEmbed from '../components/CalendlyEmbed.jsx';
 import MarkdownView from '../components/MarkdownView.jsx';
-import { Highlight, Spinner } from '../components/brand.jsx';
+import { Highlight } from '../components/brand.jsx';
+import StartupDetailSkeleton from '../components/skeleton/StartupDetailSkeleton.jsx';
 
 export default function StartupDetail() {
   const { id } = useParams();
@@ -25,11 +26,7 @@ export default function StartupDetail() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-32">
-        <Spinner className="h-10 w-10" />
-      </div>
-    );
+    return <StartupDetailSkeleton />;
   }
 
   if (error || !startup) {
@@ -50,7 +47,7 @@ export default function StartupDetail() {
   return (
     <>
       {/* HEADER */}
-      <section className="border-b border-ia-line bg-paper">
+      <section className="border-b border-ia-line bg-[#f3f3f3]">
         <div className="mx-auto max-w-6xl px-6 py-12">
           <Link to="/startups" className="btn-ghost -ml-3 mb-6">
             ← Back to all startups
@@ -61,7 +58,7 @@ export default function StartupDetail() {
               <img
                 src={startup.logo_url}
                 alt={`${startup.name} logo`}
-                className="h-24 w-24 rounded-2xl border border-ia-line bg-white object-contain p-2"
+                className="h-24 w-24 rounded-2xl border border-ia-line bg-white object-cover"
               />
             ) : (
               <div className="grid h-24 w-24 place-items-center rounded-2xl border border-ia-line bg-white text-3xl font-extrabold text-ia-ink">
@@ -74,7 +71,7 @@ export default function StartupDetail() {
               </h1>
               <div className="mt-3 flex flex-wrap gap-2">
                 {startup.sector && <span className="badge">{startup.sector}</span>}
-                {startup.stage && <span className="badge-orange">{startup.stage}</span>}
+                {startup.stage && <span className="badge-stage">{startup.stage}</span>}
               </div>
             </div>
 
@@ -155,7 +152,7 @@ export default function StartupDetail() {
                     href={startup.pitch_deck_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-semibold text-ia-orange underline underline-offset-2 hover:text-ia-orange-2"
+                    className="font-semibold text-ia-ink underline underline-offset-2 hover:text-ia-muted"
                   >
                     Click here →
                   </a>
@@ -167,7 +164,7 @@ export default function StartupDetail() {
       </section>
 
       {/* CALENDLY */}
-      <section>
+      <section id="book">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <h2 className="text-3xl font-extrabold tracking-tightish sm:text-4xl">
             Pick a time that <Highlight>works for you</Highlight>.
@@ -187,10 +184,10 @@ export default function StartupDetail() {
 function DetailBlock({ heading, value, children }) {
   return (
     <div>
-      <h3 className="text-base font-bold text-ia-orange">
+      <h3 className="text-base font-bold text-ia-ink">
         {heading}
-        {value && <span className="text-ia-orange"> : </span>}
-        {value && <span className="text-ia-orange">{value}</span>}
+        {value && <span className="text-ia-muted"> : </span>}
+        {value && <span className="text-ia-ink">{value}</span>}
       </h3>
       <div className="mt-3">{children}</div>
     </div>
@@ -216,10 +213,10 @@ function FounderRow({ founder }) {
         <img
           src={founder.photo_url}
           alt={founder.name}
-          className="aspect-[3/4] w-full rounded-2xl border border-ia-line bg-ia-cream object-cover"
+          className="aspect-[3/4] w-full rounded-2xl border border-ia-line bg-[#f3f3f3] object-cover"
         />
       ) : (
-        <div className="grid aspect-[3/4] w-full place-items-center rounded-2xl border border-ia-line bg-ia-cream text-4xl font-extrabold text-ia-ink">
+        <div className="grid aspect-[3/4] w-full place-items-center rounded-2xl border border-ia-line bg-[#f3f3f3] text-4xl font-extrabold text-ia-ink">
           {(founder.name || '?').trim().charAt(0).toUpperCase()}
         </div>
       )}

@@ -37,7 +37,7 @@ export default function AdminLogin() {
       <div className="mx-auto flex max-w-md flex-col items-center px-6 py-20">
         <div className="card-soft w-full p-8">
           <div className="flex items-center gap-2">
-            <Asterisk size={22} />
+            <Asterisk size={22} className="text-ia-orange" />
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ia-orange">
               Admin
             </span>

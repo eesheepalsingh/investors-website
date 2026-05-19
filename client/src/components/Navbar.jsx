@@ -27,7 +27,6 @@ export default function Navbar({ variant = 'public' }) {
 
         {variant === 'public' ? (
           <>
-            {/* Desktop */}
             <nav className="hidden items-center gap-7 md:flex">
               {PUBLIC_LINKS.map((l) => (
                 <NavLink
@@ -57,11 +56,10 @@ export default function Navbar({ variant = 'public' }) {
               </Link>
             </div>
 
-            {/* Mobile toggle */}
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden rounded-md p-2 text-ia-ink hover:bg-ia-cream"
+              className="rounded-md p-2 text-ia-ink hover:bg-ia-cream md:hidden"
               aria-label="Toggle menu"
             >
               <Burger open={open} />
@@ -77,7 +75,7 @@ export default function Navbar({ variant = 'public' }) {
                 <Link to="/admin/dashboard" className="nav-link">
                   Dashboard
                 </Link>
-                <button onClick={onSignOut} className="btn-secondary">
+                <button type="button" onClick={onSignOut} className="btn-secondary">
                   Sign out
                 </button>
               </>
@@ -86,7 +84,6 @@ export default function Navbar({ variant = 'public' }) {
         )}
       </div>
 
-      {/* Mobile menu */}
       {variant === 'public' && open && (
         <div className="border-t border-ia-line bg-white md:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
@@ -98,7 +95,7 @@ export default function Navbar({ variant = 'public' }) {
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   `rounded-md px-3 py-2 text-sm font-semibold uppercase tracking-[0.14em] ${
-                    isActive ? 'text-ia-orange' : 'text-ia-ink/85'
+                    isActive ? 'text-ia-ink font-bold' : 'text-ia-ink/85'
                   }`
                 }
               >
@@ -129,7 +126,7 @@ export default function Navbar({ variant = 'public' }) {
 
 function Burger({ open }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
       {open ? (
         <path
           d="M6 6l12 12M18 6L6 18"

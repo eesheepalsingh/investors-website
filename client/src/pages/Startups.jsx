@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../lib/axios.js';
 import StartupGrid from '../components/StartupGrid.jsx';
+import StartupsPageSkeleton from '../components/skeleton/StartupsPageSkeleton.jsx';
 import { Highlight, SectionEyebrow } from '../components/brand.jsx';
 
 export default function Startups() {
@@ -48,10 +49,14 @@ export default function Startups() {
     setQ('');
   };
 
+  if (loading) {
+    return <StartupsPageSkeleton />;
+  }
+
   return (
     <>
       {/* Page header */}
-      <section className="border-b border-ia-line bg-paper">
+      <section className="border-b border-ia-line bg-[#f3f3f3]">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20">
           <SectionEyebrow>The cohort</SectionEyebrow>
           <h1 className="mt-3 text-4xl font-extrabold tracking-tighter-2 sm:text-6xl">
@@ -102,19 +107,12 @@ export default function Startups() {
           </div>
         </div>
 
-        {loading && (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="card h-44 animate-pulse bg-ia-cream" />
-            ))}
-          </div>
-        )}
         {error && (
           <div className="card border-red-200 bg-red-50 p-6 text-sm text-red-700">
             Failed to load: {error}
           </div>
         )}
-        {!loading && !error && <StartupGrid startups={filtered} />}
+        {!error && <StartupGrid startups={filtered} />}
       </div>
     </>
   );

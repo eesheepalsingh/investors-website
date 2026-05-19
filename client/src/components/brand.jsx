@@ -1,6 +1,9 @@
 // Brand primitives — yellow highlighter, orange asterisk, numbered circle,
 // IA logo, decorative dividers. Kept in one file because they're tiny.
 
+import iaLogo from '../assets/ia-logo.png';
+import footerLogo from '../assets/footer-logo.avif';
+
 export function Highlight({ children, className = '' }) {
   return <span className={`hl ${className}`}>{children}</span>;
 }
@@ -14,7 +17,6 @@ export function Asterisk({ size = 28, className = '' }) {
       fill="none"
       aria-hidden
       className={className}
-      style={{ color: '#e8451e' }}
     >
       <g fill="currentColor">
         <rect x="14.5" y="2" width="3" height="28" rx="1.5" />
@@ -48,19 +50,22 @@ export function NumberCircle({ n }) {
   );
 }
 
-export function IALogo({ withWordmark = true, className = '' }) {
+/**
+ * India Accelerator logo.
+ * @param {'dark' | 'light'} theme — dark = header logo; light = footer logo (transparent, white)
+ */
+export function IALogo({ className = '', theme = 'dark' }) {
+  const src = theme === 'light' ? footerLogo : iaLogo;
+
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <span className="relative grid h-9 w-9 place-items-center rounded-md bg-ia-ink text-white">
-        <span className="text-base font-black leading-none">
-          i<span className="text-ia-orange">A</span>
-        </span>
-      </span>
-      {withWordmark && (
-        <span className="text-sm font-bold uppercase tracking-[0.18em] text-ia-ink">
-          India <span className="font-medium">Accelerator</span>
-        </span>
-      )}
+    <span className={`inline-flex items-center ${className}`}>
+      <img
+        src={src}
+        alt="India Accelerator"
+        className="h-9 w-auto max-w-[220px] object-contain object-left sm:h-10"
+        width={220}
+        height={40}
+      />
     </span>
   );
 }
