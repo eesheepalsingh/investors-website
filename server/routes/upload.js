@@ -9,7 +9,10 @@ const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024 }, // 15 MB
 });
 
-function uploadHandler(bucket, allowedMime) {
+// Single bucket for this project, with subfolders per asset type.
+const BUCKET = 'investors-website';
+
+function uploadHandler(folder, allowedMime) {
   return async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
@@ -22,18 +25,18 @@ function uploadHandler(bucket, allowedMime) {
         .replace(/\.[^.]+$/, '')
         .replace(/[^a-z0-9_-]+/gi, '-')
         .slice(0, 40) || 'file';
-      const key = `${Date.now()}-${safeBase}.${ext}`;
+      const key = `${folder}/${Date.now()}-${safeBase}.${ext}`;
 
       const { error: upErr } = await supabaseAdmin.storage
-        .from(bucket)
+        .from(BUCKET)
         .upload(key, req.file.buffer, {
           contentType: req.file.mimetype,
           upsert: false,
         });
       if (upErr) return res.status(400).json({ error: upErr.message });
 
-      const { data } = supabaseAdmin.storage.from(bucket).getPublicUrl(key);
-      res.status(201).json({ url: data.publicUrl, path: key, bucket });
+      const { data } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(key);
+      res.status(201).json({ url: data.publicUrl, path: key, bucket: BUCKET });
     } catch (err) {
       res.status(500).json({ error: err.message || 'Upload failed' });
     }

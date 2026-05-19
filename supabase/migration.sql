@@ -37,14 +37,18 @@ CREATE TABLE IF NOT EXISTS "investors-website".startups (
   logo_url TEXT,
   sector TEXT,
   stage TEXT,
-  revenue TEXT,
-  ask TEXT,
+  revenue TEXT,               -- legacy: superseded by `metrics`; safe to leave NULL
+  valuation TEXT,             -- legacy: superseded by `metrics`
+  ask TEXT,                   -- legacy: superseded by `metrics`
+  metrics TEXT,               -- markdown: user-authored bullet list of all metrics
+  moat TEXT,                  -- markdown
+  traction TEXT,              -- markdown
+  description TEXT,           -- markdown (long-form company summary)
   investor_backers TEXT[],
   pitch_deck_url TEXT,
   linkedin_url TEXT,
   website_url TEXT,
   calendly_url TEXT,
-  short_description TEXT,
   is_visible BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

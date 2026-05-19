@@ -104,13 +104,17 @@ function sanitize(body = {}) {
     'sector',
     'stage',
     'revenue',
+    'valuation',
     'ask',
+    'metrics',
+    'moat',
+    'traction',
+    'description',
     'investor_backers',
     'pitch_deck_url',
     'linkedin_url',
     'website_url',
     'calendly_url',
-    'short_description',
     'is_visible',
   ];
   const out = {};

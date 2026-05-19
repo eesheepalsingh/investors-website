@@ -20,25 +20,13 @@ export default function StartupCard({ startup }) {
         </div>
       </div>
 
-      {startup.short_description && (
+      {startup.description && (
         <p className="mt-5 line-clamp-3 text-sm leading-relaxed text-ia-muted">
-          {startup.short_description}
+          {stripMd(startup.description)}
         </p>
       )}
 
-      <div className="mt-6 flex items-end justify-between border-t border-ia-line pt-4 text-xs">
-        <div className="flex flex-col gap-0.5">
-          {startup.revenue && (
-            <span className="text-ia-muted">
-              Revenue · <span className="font-semibold text-ia-ink">{startup.revenue}</span>
-            </span>
-          )}
-          {startup.ask && (
-            <span className="text-ia-muted">
-              Ask · <span className="font-semibold text-ia-ink">{startup.ask}</span>
-            </span>
-          )}
-        </div>
+      <div className="mt-6 flex items-end justify-end border-t border-ia-line pt-4">
         <span className="inline-flex items-center gap-1 text-sm font-semibold text-ia-orange transition group-hover:gap-2">
           View →
         </span>
@@ -50,6 +38,19 @@ export default function StartupCard({ startup }) {
       />
     </Link>
   );
+}
+
+// Strip the lightest markdown so card previews stay readable.
+function stripMd(s = '') {
+  return s
+    .replace(/^#+\s+/gm, '')           // headings
+    .replace(/\*\*(.+?)\*\*/g, '$1')   // bold
+    .replace(/\*(.+?)\*/g, '$1')       // italic
+    .replace(/`([^`]+)`/g, '$1')       // inline code
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links
+    .replace(/^[-*]\s+/gm, '')         // bullets
+    .replace(/\n{2,}/g, ' ')           // collapse blank lines
+    .replace(/\n/g, ' ');
 }
 
 function Logo({ url, name }) {

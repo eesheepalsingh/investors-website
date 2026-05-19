@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../lib/axios.js';
 import FounderFieldGroup from '../../components/FounderFieldGroup.jsx';
+import MarkdownEditor from '../../components/MarkdownEditor.jsx';
 import { Highlight, SectionEyebrow } from '../../components/brand.jsx';
 
 const emptyStartup = {
@@ -9,14 +10,15 @@ const emptyStartup = {
   logo_url: '',
   sector: '',
   stage: '',
-  revenue: '',
-  ask: '',
+  metrics: '',
+  moat: '',
+  traction: '',
+  description: '',
   investor_backers: [],
   pitch_deck_url: '',
   linkedin_url: '',
   website_url: '',
   calendly_url: '',
-  short_description: '',
   is_visible: true,
 };
 
@@ -222,11 +224,9 @@ export default function StartupForm({ mode }) {
               )}
             </h1>
             <p className="mt-2 text-sm text-ia-muted">
-              Changes save when you click{' '}
-              <span className="font-semibold text-ia-ink">
-                {isEdit ? '"Save changes"' : '"Create startup"'}
-              </span>
-              .
+              Rich-text fields (Description, MOAT, Traction) support markdown — use the toolbar
+              or write it directly. Switch to <span className="font-semibold text-ia-ink">Preview</span> to
+              see how it'll render.
             </p>
           </div>
           <button
@@ -251,16 +251,10 @@ export default function StartupForm({ mode }) {
               <input className="input" value={startup.name} onChange={(e) => set('name', e.target.value)} required />
             </Field>
             <Field label="Sector">
-              <input className="input" placeholder="FinTech, HealthTech…" value={startup.sector} onChange={(e) => set('sector', e.target.value)} />
+              <input className="input" placeholder="Space-Tech, FinTech, HealthTech…" value={startup.sector} onChange={(e) => set('sector', e.target.value)} />
             </Field>
             <Field label="Stage">
               <input className="input" placeholder="Pre-Seed, Seed, Series A…" value={startup.stage} onChange={(e) => set('stage', e.target.value)} />
-            </Field>
-            <Field label="Revenue">
-              <input className="input" placeholder="₹50L ARR" value={startup.revenue} onChange={(e) => set('revenue', e.target.value)} />
-            </Field>
-            <Field label="Ask">
-              <input className="input" placeholder="₹2Cr for 10%" value={startup.ask} onChange={(e) => set('ask', e.target.value)} />
             </Field>
             <Field label="Visible on public site">
               <label className="flex h-11 items-center gap-3">
@@ -283,17 +277,60 @@ export default function StartupForm({ mode }) {
               </label>
             </Field>
           </div>
+        </Section>
 
-          <div className="mt-4">
-            <Field label="Short description (1–2 sentences)">
-              <textarea
-                className="input min-h-[96px]"
-                maxLength={280}
-                value={startup.short_description}
-                onChange={(e) => set('short_description', e.target.value)}
-              />
-            </Field>
-          </div>
+        {/* Description — markdown */}
+        <Section title="Description">
+          <p className="mb-3 text-xs text-ia-muted">
+            The long-form company summary that appears below the Sector heading on the
+            public detail page.
+          </p>
+          <MarkdownEditor
+            value={startup.description}
+            onChange={(v) => set('description', v)}
+            rows={8}
+            placeholder={`India is developing more than 100 satellites every year… **BAAS** is addressing this gap by developing a family of launch vehicles capable of carrying payloads ranging from small CubeSats to medium commercial satellites.`}
+          />
+        </Section>
+
+        {/* Metrics — single markdown field, user writes their own bullets */}
+        <Section title="Metrics">
+          <p className="mb-3 text-xs text-ia-muted">
+            Write the metrics as a bullet list. Add whatever's relevant — Revenue, Valuation,
+            Ask, MRR, GMV, Users — in whatever format suits the startup.
+          </p>
+          <MarkdownEditor
+            value={startup.metrics}
+            onChange={(v) => set('metrics', v)}
+            rows={5}
+            placeholder={`- Revenue: 6.7 L\n- Valuation: 40 Cr\n- Ask: 8 Cr`}
+          />
+        </Section>
+
+        {/* MOAT — markdown */}
+        <Section title="MOAT">
+          <p className="mb-3 text-xs text-ia-muted">
+            What's defensible about this startup. Use bullet points for clarity.
+          </p>
+          <MarkdownEditor
+            value={startup.moat}
+            onChange={(v) => set('moat', v)}
+            rows={5}
+            placeholder={`- Indigenous small-launch vehicle development\n- Modular rocket architecture\n- Cost advantage over foreign launch providers`}
+          />
+        </Section>
+
+        {/* Traction — markdown */}
+        <Section title="Traction">
+          <p className="mb-3 text-xs text-ia-muted">
+            Recent milestones, contracts, pilots, partnerships, revenue moments.
+          </p>
+          <MarkdownEditor
+            value={startup.traction}
+            onChange={(v) => set('traction', v)}
+            rows={5}
+            placeholder={`- Conducted a paid pilot mission with nominal flight results\n- Signed a Joint Application Form with a Brazilian partner`}
+          />
         </Section>
 
         {/* Investor backers */}

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/axios.js';
-import FounderCard from '../components/FounderCard.jsx';
 import CalendlyEmbed from '../components/CalendlyEmbed.jsx';
-import { Asterisk, Highlight, SectionEyebrow, Spinner } from '../components/brand.jsx';
+import MarkdownView from '../components/MarkdownView.jsx';
+import { Highlight, Spinner } from '../components/brand.jsx';
 
 export default function StartupDetail() {
   const { id } = useParams();
@@ -26,7 +26,7 @@ export default function StartupDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex max-w-5xl items-center justify-center px-6 py-32">
+      <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-32">
         <Spinner className="h-10 w-10" />
       </div>
     );
@@ -51,7 +51,7 @@ export default function StartupDetail() {
     <>
       {/* HEADER */}
       <section className="border-b border-ia-line bg-paper">
-        <div className="mx-auto max-w-5xl px-6 py-12">
+        <div className="mx-auto max-w-6xl px-6 py-12">
           <Link to="/startups" className="btn-ghost -ml-3 mb-6">
             ← Back to all startups
           </Link>
@@ -77,93 +77,99 @@ export default function StartupDetail() {
                 {startup.stage && <span className="badge-orange">{startup.stage}</span>}
               </div>
             </div>
-          </div>
 
-          {startup.short_description && (
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ia-ink/85">
-              {startup.short_description}
-            </p>
-          )}
-
-          {/* Action links */}
-          <div className="mt-7 flex flex-wrap gap-3">
-            {startup.pitch_deck_url && (
-              <a
-                href={startup.pitch_deck_url}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary"
-              >
-                📄 View Pitch Deck
-              </a>
-            )}
-            {startup.website_url && (
-              <a
-                href={startup.website_url}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-secondary"
-              >
-                🌐 Website
-              </a>
-            )}
-            {startup.linkedin_url && (
-              <a
-                href={startup.linkedin_url}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-secondary"
-              >
-                💼 LinkedIn
-              </a>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {startup.website_url && (
+                <a href={startup.website_url} target="_blank" rel="noreferrer" className="btn-secondary">
+                  🌐 Website
+                </a>
+              )}
+              {startup.linkedin_url && (
+                <a href={startup.linkedin_url} target="_blank" rel="noreferrer" className="btn-secondary">
+                  💼 LinkedIn
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* HIGHLIGHTS + BACKERS */}
+      {/* MAIN — two-column layout: founders left, content right */}
       <section className="border-b border-ia-line">
-        <div className="mx-auto max-w-5xl px-6 py-12">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <Highlight2 label="Revenue" value={startup.revenue} barColor="bg-ia-green" />
-            <Highlight2 label="Ask" value={startup.ask} accent barColor="bg-ia-orange" />
-          </div>
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[280px_1fr]">
+            {/* Left: founders */}
+            <aside>
+              <h2 className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-ia-muted">
+                Team
+              </h2>
+              {founders.length === 0 ? (
+                <p className="text-sm text-ia-muted">No founders listed yet.</p>
+              ) : (
+                <div className="space-y-7">
+                  {founders.map((f) => (
+                    <FounderRow key={f.id} founder={f} />
+                  ))}
+                </div>
+              )}
+            </aside>
 
-          {backers.length > 0 && (
-            <div className="mt-10">
-              <SectionEyebrow>Investor backers</SectionEyebrow>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {backers.map((b) => (
-                  <span key={b} className="badge">{b}</span>
-                ))}
-              </div>
+            {/* Right: content */}
+            <div className="space-y-10">
+              {/* Sector + Description */}
+              <DetailBlock heading="Sector" value={startup.sector}>
+                <MarkdownView md={startup.description} empty="No description provided." />
+              </DetailBlock>
+
+              {/* Stage + metrics (markdown, user-authored) */}
+              <DetailBlock heading="Stage" value={startup.stage}>
+                <MarkdownView md={metricsMarkdown(startup)} empty="—" />
+              </DetailBlock>
+
+              {/* MOAT */}
+              <DetailBlock heading="MOAT">
+                <MarkdownView md={startup.moat} empty="—" />
+              </DetailBlock>
+
+              {/* Traction */}
+              <DetailBlock heading="Traction">
+                <MarkdownView md={startup.traction} empty="—" />
+              </DetailBlock>
+
+              {/* Investor backers */}
+              {backers.length > 0 && (
+                <DetailBlock heading="Investor Backers">
+                  <div className="flex flex-wrap gap-2">
+                    {backers.map((b) => (
+                      <span key={b} className="badge">{b}</span>
+                    ))}
+                  </div>
+                </DetailBlock>
+              )}
+
+              {/* Pitch deck CTA — matches "Want to see our pitch deck? Click here →" */}
+              {startup.pitch_deck_url && (
+                <p className="text-base">
+                  Want to see our pitch deck?{' '}
+                  <a
+                    href={startup.pitch_deck_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-ia-orange underline underline-offset-2 hover:text-ia-orange-2"
+                  >
+                    Click here →
+                  </a>
+                </p>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </section>
-
-      {/* FOUNDERS */}
-      {founders.length > 0 && (
-        <section className="border-b border-ia-line bg-paper">
-          <div className="mx-auto max-w-5xl px-6 py-14">
-            <SectionEyebrow>The team</SectionEyebrow>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-4xl">
-              Meet the <Highlight>founders</Highlight>.
-            </h2>
-            <div className="mt-8 flex flex-wrap gap-4">
-              {founders.map((f) => (
-                <FounderCard key={f.id} founder={f} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* CALENDLY */}
       <section>
-        <div className="mx-auto max-w-5xl px-6 py-14">
-          <SectionEyebrow>Book a meeting</SectionEyebrow>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-4xl">
+        <div className="mx-auto max-w-6xl px-6 py-14">
+          <h2 className="text-3xl font-extrabold tracking-tightish sm:text-4xl">
             Pick a time that <Highlight>works for you</Highlight>.
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-ia-muted">
@@ -178,16 +184,64 @@ export default function StartupDetail() {
   );
 }
 
-function Highlight2({ label, value, accent, barColor }) {
+function DetailBlock({ heading, value, children }) {
   return (
-    <div className="card p-6">
-      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-ia-muted">
-        {label}
-      </div>
-      <div className={`mt-2 text-3xl font-extrabold sm:text-4xl ${accent ? 'text-ia-orange' : 'text-ia-ink'}`}>
-        {value || '—'}
-      </div>
-      <span className={`stat-bar ${barColor}`} />
+    <div>
+      <h3 className="text-base font-bold text-ia-orange">
+        {heading}
+        {value && <span className="text-ia-orange"> : </span>}
+        {value && <span className="text-ia-orange">{value}</span>}
+      </h3>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
+// Use the markdown `metrics` field when present; otherwise fall back to building
+// a bullet list from legacy revenue/valuation/ask columns so existing data
+// keeps rendering until the admin re-saves it.
+function metricsMarkdown(s) {
+  if (s.metrics && s.metrics.trim()) return s.metrics;
+  const lines = [];
+  if (s.revenue) lines.push(`- Revenue: ${s.revenue}`);
+  if (s.valuation) lines.push(`- Valuation: ${s.valuation}`);
+  if (s.ask) lines.push(`- Ask: ${s.ask}`);
+  return lines.join('\n');
+}
+
+function FounderRow({ founder }) {
+  return (
+    <div>
+      {founder.photo_url ? (
+        <img
+          src={founder.photo_url}
+          alt={founder.name}
+          className="aspect-[3/4] w-full rounded-2xl border border-ia-line bg-ia-cream object-cover"
+        />
+      ) : (
+        <div className="grid aspect-[3/4] w-full place-items-center rounded-2xl border border-ia-line bg-ia-cream text-4xl font-extrabold text-ia-ink">
+          {(founder.name || '?').trim().charAt(0).toUpperCase()}
+        </div>
+      )}
+      <h4 className="mt-4 text-base font-bold uppercase tracking-wide text-ia-ink">
+        {founder.name}
+      </h4>
+      {founder.title && (
+        <p className="mt-1 text-sm text-ia-muted">{founder.title}</p>
+      )}
+      {founder.linkedin_url && (
+        <a
+          href={founder.linkedin_url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${founder.name} on LinkedIn`}
+          className="mt-3 inline-grid h-7 w-7 place-items-center rounded bg-[#0a66c2] text-white hover:opacity-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.51 0h4.37v1.91h.06c.61-1.15 2.1-2.36 4.32-2.36 4.62 0 5.47 3.04 5.47 7v7.45h-4.56v-6.6c0-1.58-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V22H7.73V8z" />
+          </svg>
+        </a>
+      )}
     </div>
   );
 }

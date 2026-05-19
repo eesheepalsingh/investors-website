@@ -124,3 +124,62 @@ h1, h2, h3, h4 {
 .ia-spin {
   animation: ia-spin 0.9s linear infinite;
 }
+
+/* Markdown body — used in StartupDetail for description, MOAT, traction */
+.markdown-body {
+  color: var(--ia-ink);
+  font-size: 0.975rem;
+  line-height: 1.7;
+}
+.markdown-body > * + * { margin-top: 0.9em; }
+.markdown-body p { margin: 0; }
+.markdown-body strong { font-weight: 700; color: var(--ia-ink); }
+.markdown-body em { font-style: italic; }
+.markdown-body a {
+  color: var(--ia-orange);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.markdown-body a:hover { color: #ff5a2c; }
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.4em;
+  margin: 0;
+}
+.markdown-body ul { list-style: disc; }
+.markdown-body ol { list-style: decimal; }
+.markdown-body li + li { margin-top: 0.35em; }
+.markdown-body li::marker { color: var(--ia-orange); }
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ia-ink);
+}
+.markdown-body h1 { font-size: 1.5rem; }
+.markdown-body h2 { font-size: 1.25rem; }
+.markdown-body h3 { font-size: 1.1rem; }
+.markdown-body blockquote {
+  border-left: 3px solid var(--ia-orange);
+  padding-left: 1em;
+  color: #5b5b5b;
+  font-style: italic;
+}
+.markdown-body code {
+  background: #f4f1ea;
+  padding: 0.1em 0.35em;
+  border-radius: 0.3em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+.markdown-body pre {
+  background: #111111;
+  color: #f6f2ea;
+  padding: 1em;
+  border-radius: 0.6em;
+  overflow-x: auto;
+}
+.markdown-body pre code { background: transparent; padding: 0; color: inherit; }
+.markdown-body hr { border: 0; border-top: 1px solid var(--ia-line, #e6e2da); }
