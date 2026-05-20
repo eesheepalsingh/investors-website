@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/axios.js';
 import AdminTable from '../../components/AdminTable.jsx';
+import AdminTableSkeleton from '../../components/skeleton/AdminTableSkeleton.jsx';
 import { Highlight, SectionEyebrow } from '../../components/brand.jsx';
 
 const STAT_BAR_COLORS = ['bg-ia-blue', 'bg-ia-green', 'bg-ia-orange'];
 
 export default function AdminDashboard() {
   const [startups, setStartups] = useState([]);
+  const [rowCount, setRowCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
@@ -18,6 +20,7 @@ export default function AdminDashboard() {
     try {
       const { data } = await api.get('/startups/all');
       setStartups(data);
+      setRowCount(data.length);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -56,7 +59,11 @@ export default function AdminDashboard() {
     if (!confirmDelete) return;
     try {
       await api.delete(`/startups/${confirmDelete.id}`);
-      setStartups((cur) => cur.filter((x) => x.id !== confirmDelete.id));
+      setStartups((cur) => {
+        const next = cur.filter((x) => x.id !== confirmDelete.id);
+        setRowCount(next.length);
+        return next;
+      });
       setConfirmDelete(null);
     } catch (err) {
       setError(err.message);
@@ -64,7 +71,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="bg-paper">
+    <div className="bg-[#f3f3f3]">
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
@@ -102,7 +109,7 @@ export default function AdminDashboard() {
         )}
 
         {loading ? (
-          <div className="card h-64 animate-pulse bg-ia-cream" />
+          <AdminTableSkeleton rows={startups.length || rowCount} />
         ) : (
           <AdminTable
             startups={startups}
@@ -126,7 +133,7 @@ export default function AdminDashboard() {
                 Cancel
               </button>
               <button
-                className="inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
+                className="inline-flex items-center gap-2 rounded-full bg-ia-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-ia-ink-2"
                 onClick={onDelete}
               >
                 Delete permanently

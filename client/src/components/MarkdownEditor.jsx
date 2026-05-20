@@ -70,7 +70,7 @@ export default function MarkdownEditor({
           </ToolBtn>
         </div>
 
-        <div className="inline-flex rounded-full bg-ia-cream p-0.5 text-xs font-semibold">
+        <div className="inline-flex rounded-full bg-[#f3f3f3] p-0.5 text-xs font-semibold">
           <TabBtn active={tab === 'write'} onClick={() => setTab('write')}>
             Write
           </TabBtn>
@@ -114,7 +114,7 @@ function ToolBtn({ children, onClick, title }) {
       type="button"
       onClick={onClick}
       title={title}
-      className="grid h-7 w-8 place-items-center rounded-md text-xs text-ia-ink/80 transition hover:bg-ia-cream hover:text-ia-ink"
+      className="grid h-7 w-8 place-items-center rounded-md text-xs text-ia-ink/80 transition hover:bg-[#f3f3f3] hover:text-ia-ink"
     >
       {children}
     </button>

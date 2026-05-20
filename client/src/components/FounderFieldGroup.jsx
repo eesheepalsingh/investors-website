@@ -79,7 +79,7 @@ export default function FounderFieldGroup({ index, founder, onChange, onRemove }
                 className="h-14 w-14 rounded-full border border-ia-line object-cover"
               />
             ) : (
-              <div className="grid h-14 w-14 place-items-center rounded-full bg-ia-cream text-[10px] font-semibold uppercase tracking-wider text-ia-muted">
+              <div className="grid h-14 w-14 place-items-center rounded-full bg-[#f3f3f3] text-[10px] font-semibold uppercase tracking-wider text-ia-muted">
                 No photo
               </div>
             )}

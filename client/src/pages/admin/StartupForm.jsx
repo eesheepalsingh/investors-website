@@ -4,6 +4,7 @@ import { api } from '../../lib/axios.js';
 import FounderFieldGroup from '../../components/FounderFieldGroup.jsx';
 import MarkdownEditor from '../../components/MarkdownEditor.jsx';
 import { Highlight, SectionEyebrow } from '../../components/brand.jsx';
+import StartupFormSkeleton from '../../components/skeleton/StartupFormSkeleton.jsx';
 
 const emptyStartup = {
   name: '',
@@ -41,6 +42,7 @@ export default function StartupForm({ mode }) {
   const [originalFounderIds, setOriginalFounderIds] = useState([]);
   const [backerInput, setBackerInput] = useState('');
   const [loading, setLoading] = useState(isEdit);
+  const [founderCount, setFounderCount] = useState(1);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
@@ -72,6 +74,7 @@ export default function StartupForm({ mode }) {
             }))
           );
           setOriginalFounderIds(fs.map((f) => f.id));
+          setFounderCount(fs.length);
         }
       })
       .catch((err) => alive && setError(err.message))
@@ -201,17 +204,11 @@ export default function StartupForm({ mode }) {
   };
 
   if (loading) {
-    return (
-      <div className="bg-paper">
-        <div className="mx-auto max-w-4xl px-6 py-16">
-          <div className="card h-96 animate-pulse bg-ia-cream" />
-        </div>
-      </div>
-    );
+    return <StartupFormSkeleton founderCount={founderCount} />;
   }
 
   return (
-    <div className="bg-paper">
+    <div className="bg-[#f3f3f3]">
       <form onSubmit={onSubmit} className="mx-auto max-w-4xl px-6 py-10">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
@@ -262,7 +259,7 @@ export default function StartupForm({ mode }) {
                   type="button"
                   onClick={() => set('is_visible', !startup.is_visible)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                    startup.is_visible ? 'bg-ia-orange' : 'bg-ia-line-2'
+                    startup.is_visible ? 'bg-ia-ink' : 'bg-ia-line-2'
                   }`}
                 >
                   <span
@@ -393,7 +390,7 @@ export default function StartupForm({ mode }) {
                 {startup.logo_url ? (
                   <img src={startup.logo_url} alt="" className="h-16 w-16 rounded-xl border border-ia-line bg-white object-contain p-1.5" />
                 ) : (
-                  <div className="grid h-16 w-16 place-items-center rounded-xl border border-ia-line bg-ia-cream text-[10px] font-semibold uppercase tracking-wider text-ia-muted">
+                  <div className="grid h-16 w-16 place-items-center rounded-xl border border-ia-line bg-[#f3f3f3] text-[10px] font-semibold uppercase tracking-wider text-ia-muted">
                     No logo
                   </div>
                 )}
@@ -417,7 +414,7 @@ export default function StartupForm({ mode }) {
                     href={startup.pitch_deck_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm font-semibold text-ia-orange hover:text-ia-orange-2"
+                    className="text-sm font-semibold text-ia-ink hover:text-ia-ink-2"
                   >
                     View current deck →
                   </a>

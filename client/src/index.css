@@ -6,9 +6,17 @@
   color-scheme: light;
   --ia-bg: #ffffff;
   --ia-cream: #f6f2ea;
+  --ia-cream-2: #efe9dd;
   --ia-ink: #111111;
+  --ia-ink-2: #1f1f1f;
+  --ia-muted: #5b5b5b;
+  --ia-muted-2: #8a8a8a;
+  --ia-line: #e6e2da;
+  --ia-line-2: #d9d4c9;
   --ia-orange: #e8451e;
+  --ia-orange-2: #ff5a2c;
   --ia-yellow: #ffe65c;
+
 }
 
 html,
@@ -172,6 +180,59 @@ h1, h2, h3, h4 {
   }
   .card-soft {
     @apply rounded-2xl border border-ia-line bg-white shadow-soft;
+  }
+
+  /* Startup card — white grid card */
+  .startup-card {
+    @apply flex h-full flex-col overflow-hidden rounded-2xl border border-ia-line bg-white transition duration-300 ease-out;
+    box-shadow:
+      0 1px 2px rgba(15, 15, 15, 0.04),
+      0 6px 20px -6px rgba(15, 15, 15, 0.08);
+  }
+  .startup-card:hover {
+    @apply -translate-y-1 border-ia-line-2;
+    box-shadow:
+      0 4px 8px rgba(15, 15, 15, 0.04),
+      0 16px 40px -12px rgba(15, 15, 15, 0.14);
+  }
+  .startup-card__media {
+    @apply relative block aspect-[5/3] w-full overflow-hidden bg-ia-cream;
+  }
+  .startup-card__img {
+    @apply h-full w-full object-cover transition duration-500 ease-out;
+  }
+  .startup-card:hover .startup-card__img {
+    transform: scale(1.04);
+  }
+  .startup-card__media-fallback {
+    @apply flex h-full w-full items-center justify-center bg-ia-cream text-4xl font-extrabold tracking-tightish text-ia-muted-2;
+  }
+  .startup-card__content {
+    @apply flex min-h-0 flex-1 flex-col px-5 pb-5 pt-4;
+  }
+  .startup-card__title {
+    @apply text-lg font-bold leading-snug tracking-tightish text-ia-ink;
+  }
+  .startup-card__tags {
+    @apply mt-2.5 flex flex-wrap gap-1.5;
+  }
+  .startup-card__desc {
+    @apply mt-3 line-clamp-3 text-sm leading-relaxed text-ia-muted;
+  }
+  .startup-card__desc--empty {
+    @apply italic text-ia-muted-2;
+  }
+  .startup-card__footer {
+    @apply mt-auto flex items-center gap-3 border-t border-ia-line pt-4;
+  }
+  .startup-card__book-btn {
+    @apply btn-primary min-w-0 flex-1 justify-center px-4 py-2.5 text-xs sm:text-sm;
+  }
+  .startup-card__view-link {
+    @apply shrink-0 text-sm font-semibold text-ia-ink underline-offset-4 transition hover:text-ia-muted hover:underline;
+  }
+  .startup-card .shimmer {
+    @apply bg-ia-cream-2;
   }
 
   /* Forms */

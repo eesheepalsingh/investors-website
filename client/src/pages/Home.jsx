@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/axios.js';
 import StartupGrid from '../components/StartupGrid.jsx';
@@ -10,6 +10,7 @@ import {
 import StepStampCard from '../components/StepStampCard.jsx';
 import HomeCtaBanner from '../components/HomeCtaBanner.jsx';
 import { StartupCardSkeletonGrid } from '../components/skeleton/StartupCardSkeleton.jsx';
+import { withFeaturedPlaceholders } from '../data/featuredDummyStartups.js';
 
 export default function Home() {
   const [startups, setStartups] = useState([]);
@@ -28,8 +29,7 @@ export default function Home() {
     };
   }, []);
 
-  const featured = startups;
-  const featuredCount = featured.length;
+  const featured = useMemo(() => withFeaturedPlaceholders(startups, 3), [startups]);
 
   return (
     <>
@@ -84,7 +84,7 @@ export default function Home() {
           </div>
 
           {loading && (
-            <StartupCardSkeletonGrid count={featuredCount > 0 ? featuredCount : 3} />
+            <StartupCardSkeletonGrid count={3} />
           )}
           {error && <ErrorBlock message={error} />}
           {!loading && !error && <StartupGrid startups={featured} />}

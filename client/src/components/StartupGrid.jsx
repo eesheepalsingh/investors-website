@@ -1,11 +1,8 @@
 import StartupCard from './StartupCard.jsx';
 
-/** Grid columns match visible card count (no empty column slots). */
-export function startupGridClass(count) {
-  const n = Math.max(1, count);
-  if (n === 1) return 'grid max-w-md grid-cols-1 gap-5';
-  if (n === 2) return 'grid grid-cols-1 gap-5 sm:grid-cols-2';
-  return 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3';
+/** 3 cards per row on large screens. */
+export function startupGridClass() {
+  return 'startup-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3';
 }
 
 export default function StartupGrid({ startups }) {
@@ -17,9 +14,9 @@ export default function StartupGrid({ startups }) {
     );
   }
   return (
-    <div className={startupGridClass(startups.length)}>
+    <div className={startupGridClass()}>
       {startups.map((s) => (
-        <StartupCard key={s.id} startup={s} />
+        <StartupCard key={s.id ?? s.name} startup={s} />
       ))}
     </div>
   );

@@ -62,9 +62,9 @@ export function IALogo({ className = '', theme = 'dark' }) {
       <img
         src={src}
         alt="India Accelerator"
-        className="h-9 w-auto max-w-[220px] object-contain object-left sm:h-10"
-        width={220}
-        height={40}
+        className="h-11 w-auto max-w-[280px] object-contain object-left sm:h-12"
+        width={280}
+        height={48}
       />
     </span>
   );

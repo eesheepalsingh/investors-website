@@ -13,7 +13,7 @@ export default function AdminTable({ startups, onToggleVisible, onDelete }) {
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-ia-line text-sm">
-          <thead className="bg-ia-cream/60 text-left text-xs font-semibold uppercase tracking-[0.14em] text-ia-muted">
+          <thead className="bg-ia-ink-2 text-left text-xs font-semibold uppercase tracking-[0.14em] text-white/75">
             <tr>
               <th className="px-5 py-3.5">Startup</th>
               <th className="px-5 py-3.5">Sector</th>
@@ -47,7 +47,7 @@ export default function AdminTable({ startups, onToggleVisible, onDelete }) {
                   <button
                     onClick={() => onToggleVisible(s)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                      s.is_visible ? 'bg-ia-orange' : 'bg-ia-line-2'
+                      s.is_visible ? 'bg-ia-ink' : 'bg-ia-line-2'
                     }`}
                     aria-label="Toggle visibility"
                   >
