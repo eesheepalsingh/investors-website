@@ -54,17 +54,21 @@ export function NumberCircle({ n }) {
  * India Accelerator logo.
  * @param {'dark' | 'light'} theme — dark = header logo; light = footer logo (transparent, white)
  */
-export function IALogo({ className = '', theme = 'dark' }) {
+export function IALogo({ className = '', theme = 'dark', size = 'default' }) {
   const src = theme === 'light' ? footerLogo : iaLogo;
+  const imgClass =
+    size === 'header'
+      ? 'h-[3.25rem] w-auto max-w-[300px] object-contain object-left sm:h-14'
+      : 'h-11 w-auto max-w-[280px] object-contain object-left sm:h-12';
 
   return (
     <span className={`inline-flex items-center ${className}`}>
       <img
         src={src}
         alt="India Accelerator"
-        className="h-11 w-auto max-w-[280px] object-contain object-left sm:h-12"
-        width={280}
-        height={48}
+        className={imgClass}
+        width={300}
+        height={52}
       />
     </span>
   );

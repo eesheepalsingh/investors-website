@@ -98,7 +98,7 @@ export default function Home() {
               <ul className="hero-highlights">
                 {HERO_HIGHLIGHTS.map((label) => (
                   <li key={label} className="hero-highlights__item">
-                    <span className="hero-trust">
+                    <span className="hero-trust" title={label}>
                       <Asterisk size={14} className="hero-trust__icon shrink-0 text-ia-brand" />
                       <span className="hero-trust__text">{label}</span>
                     </span>

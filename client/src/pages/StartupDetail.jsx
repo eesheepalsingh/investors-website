@@ -78,13 +78,13 @@ export default function StartupDetail() {
 
             <div className="flex flex-wrap gap-2">
               {startup.website_url && (
-                <a href={startup.website_url} target="_blank" rel="noreferrer" className="btn-secondary">
-                  🌐 Website
+                <a href={startup.website_url} target="_blank" rel="noreferrer" className="btn-secondary-sm">
+                  Website
                 </a>
               )}
               {startup.linkedin_url && (
-                <a href={startup.linkedin_url} target="_blank" rel="noreferrer" className="btn-secondary">
-                  💼 LinkedIn
+                <a href={startup.linkedin_url} target="_blank" rel="noreferrer" className="btn-secondary-sm">
+                  LinkedIn
                 </a>
               )}
             </div>

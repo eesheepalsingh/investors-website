@@ -106,22 +106,31 @@ export default function StartupFilters({
       </div>
 
       <div className="startup-filters__body">
-        <label className="startup-filters__search" htmlFor="startup-search">
-          <SearchIcon />
-          <input
-            id="startup-search"
-            className="startup-filters__search-input"
-            placeholder="Search by name or description…"
-            value={q}
-            onChange={(e) => onQChange(e.target.value)}
-          />
-        </label>
+        <div
+          className={`startup-filters__row${
+            sectorOptions.length && stageOptions.length
+              ? ' startup-filters__row--triple'
+              : sectorOptions.length || stageOptions.length
+                ? ' startup-filters__row--double'
+                : ''
+          }`}
+        >
+          <div className="startup-filters__search-cell">
+            <div className="startup-filters__group-head">
+              <span className="startup-filters__group-label">Search</span>
+            </div>
+            <label className="startup-filters__search" htmlFor="startup-search">
+              <SearchIcon />
+              <input
+                id="startup-search"
+                className="startup-filters__search-input"
+                placeholder="Name or description…"
+                value={q}
+                onChange={(e) => onQChange(e.target.value)}
+              />
+            </label>
+          </div>
 
-        {(sectorOptions.length > 0 || stageOptions.length > 0) && (
-          <div className="startup-filters__divider" aria-hidden />
-        )}
-
-        <div className="startup-filters__groups">
           {sectorOptions.length > 0 && (
             <FilterChipRow
               label="Sector"

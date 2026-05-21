@@ -15,9 +15,9 @@ export default function Navbar({ variant = 'public' }) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-ia-line bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl min-w-0 items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
-        <Link to="/" className="min-w-0 shrink">
-          <IALogo />
+      <div className="mx-auto flex h-16 max-w-7xl min-w-0 items-center justify-between gap-4 px-4 sm:h-[4.5rem] sm:px-6">
+        <Link to="/" className="min-w-0 shrink leading-none">
+          <IALogo size="header" />
         </Link>
 
         {variant === 'public' ? (
