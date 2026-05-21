@@ -18,6 +18,13 @@ import StepStampCard from '../components/StepStampCard.jsx';
 import HomeCtaBanner from '../components/HomeCtaBanner.jsx';
 import { StartupCardSkeletonGrid } from '../components/skeleton/StartupCardSkeleton.jsx';
 
+const HERO_HIGHLIGHTS = [
+  'Curated Virtual Showcase',
+  '100+ Investors',
+  'Exclusive 1:1 Meetings',
+  'Handpicked Portfolio',
+];
+
 export default function Home() {
   const [startups, setStartups] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,24 +64,24 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="hero-section relative overflow-hidden border-b border-ia-line">
+      <section className="hero-section relative border-b border-ia-line">
         <div className="hero-section__glow hero-section__glow--red" aria-hidden />
         <div className="hero-section__glow hero-section__glow--soft" aria-hidden />
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-14 sm:pb-20 sm:pt-20 lg:pt-24">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-            <div className="text-center lg:text-left">
+        <div className="relative mx-auto max-w-7xl min-w-0 px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-20 lg:pt-24">
+          <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10">
+            <div className="hero-content min-w-0">
               <SectionEyebrow>Investor portal</SectionEyebrow>
-              <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tighter-2 text-ia-ink sm:text-5xl lg:text-6xl xl:text-[3.35rem]">
+              <h1 className="hero-content__title">
                 Meet the next wave of{' '}
                 <Highlight>India's boldest founders</Highlight>.
               </h1>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ia-muted sm:text-lg lg:mx-0">
+              <p className="hero-content__lead">
                 Curated startups from India Accelerator's latest cohort. Explore
                 traction, view pitch decks, and book 1:1 time with founders —
                 all in one place.
               </p>
-              <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <div className="hero-content__actions">
                 <a href="#featured" className="btn-primary">
                   Explore Startups →
                 </a>
@@ -84,13 +91,20 @@ export default function Home() {
                   rel="noreferrer"
                   className="btn-secondary"
                 >
-                  About India Accelerator
+                  <span className="sm:hidden">About IA</span>
+                  <span className="hidden sm:inline">About India Accelerator</span>
                 </a>
               </div>
-              <p className="hero-trust mx-auto mt-8 lg:mx-0">
-                <Asterisk size={14} className="shrink-0 text-ia-brand" />
-                Curated by India Accelerator's investment team
-              </p>
+              <ul className="hero-highlights">
+                {HERO_HIGHLIGHTS.map((label) => (
+                  <li key={label} className="hero-highlights__item">
+                    <span className="hero-trust">
+                      <Asterisk size={14} className="hero-trust__icon shrink-0 text-ia-brand" />
+                      <span className="hero-trust__text">{label}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <HomeHeroShowcase startups={startups} />
@@ -188,8 +202,7 @@ export default function Home() {
                 <Highlight>informed call</Highlight>.
               </h2>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-ia-muted">
-                From day one of diligence to your first founder call — every
-                resource curated, every founder vetted.
+                Connecting High-Growth Founders with Strategic Capital
               </p>
             </div>
 

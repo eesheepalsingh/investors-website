@@ -23,7 +23,12 @@ function FilterChipRow({ label, hint, values, selected, onToggle, onClear }) {
         <span className="startup-filters__group-label">{label}</span>
         {hint && <span className="startup-filters__group-hint">{hint}</span>}
       </div>
-      <div className="startup-filters__chips" role="group" aria-label={`Filter by ${label.toLowerCase()}`}>
+      <div
+        className="startup-filters__chips"
+        role="group"
+        aria-label={`Filter by ${label.toLowerCase()}`}
+        tabIndex={0}
+      >
         <button
           type="button"
           aria-pressed={noneSelected}

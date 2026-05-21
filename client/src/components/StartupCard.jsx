@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import StartupCardMetrics from './StartupCardMetrics.jsx';
+import { getCardMetricBoxes } from '../lib/startupMetrics.js';
 
 export default function StartupCard({ startup }) {
   const detailPath = `/startups/${startup.id}`;
   const hasCalendly = Boolean(startup.calendly_url?.trim());
   const preview = stripMd(startup.description);
+  const cardMetricBoxes = getCardMetricBoxes(startup, 4);
 
   return (
     <article className="startup-card group">
@@ -27,12 +30,17 @@ export default function StartupCard({ startup }) {
               {startup.stage && <span className="badge-stage">{startup.stage}</span>}
             </div>
           )}
+          <StartupCardMetrics startup={startup} />
           {preview ? (
-            <p className="startup-card__desc">{preview}</p>
-          ) : (
-            <p className="startup-card__desc startup-card__desc--empty">
-              View startup profile for full details.
+            <p className={`startup-card__desc ${cardMetricBoxes.length ? 'startup-card__desc--with-metrics' : ''}`}>
+              {preview}
             </p>
+          ) : (
+            !cardMetricBoxes.length && (
+              <p className="startup-card__desc startup-card__desc--empty">
+                View startup profile for full details.
+              </p>
+            )
           )}
         </Link>
 
