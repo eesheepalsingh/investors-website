@@ -26,4 +26,5 @@ ALTER TABLE "investors-website".startups
   ADD COLUMN IF NOT EXISTS valuation TEXT,
   ADD COLUMN IF NOT EXISTS moat TEXT,
   ADD COLUMN IF NOT EXISTS traction TEXT,
-  ADD COLUMN IF NOT EXISTS metrics TEXT;   -- markdown: user writes their own bullets (revenue / valuation / ask / anything)
+  ADD COLUMN IF NOT EXISTS metrics TEXT,   -- markdown: user writes their own bullets (revenue / valuation / ask / anything)
+  ADD COLUMN IF NOT EXISTS metrics_list JSONB DEFAULT '[]'::jsonb;  -- structured metrics: [{ label, value }, ...]

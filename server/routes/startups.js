@@ -107,6 +107,7 @@ function sanitize(body = {}) {
     'valuation',
     'ask',
     'metrics',
+    'metrics_list',
     'moat',
     'traction',
     'description',
@@ -120,6 +121,14 @@ function sanitize(body = {}) {
   const out = {};
   for (const k of allowed) {
     if (body[k] !== undefined) out[k] = body[k];
+  }
+  if (Array.isArray(out.metrics_list)) {
+    out.metrics_list = out.metrics_list
+      .map((m) => ({
+        label: String(m?.label ?? '').trim(),
+        value: String(m?.value ?? '').trim(),
+      }))
+      .filter((m) => m.label || m.value);
   }
   return out;
 }

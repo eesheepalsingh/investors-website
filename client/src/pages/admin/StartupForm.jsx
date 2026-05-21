@@ -13,6 +13,7 @@ const emptyStartup = {
   sector: '',
   stage: '',
   metrics: '',
+  metrics_list: [],
   moat: '',
   traction: '',
   description: '',
@@ -23,6 +24,12 @@ const emptyStartup = {
   calendly_url: '',
   is_visible: true,
 };
+
+const emptyMetric = () => ({
+  _localId: crypto.randomUUID(),
+  label: '',
+  value: '',
+});
 
 const emptyFounder = () => ({
   _localId: crypto.randomUUID(),
@@ -62,6 +69,13 @@ export default function StartupForm({ mode }) {
           ...emptyStartup,
           ...rest,
           investor_backers: Array.isArray(rest.investor_backers) ? rest.investor_backers : [],
+          metrics_list: Array.isArray(rest.metrics_list)
+            ? rest.metrics_list.map((m) => ({
+                _localId: crypto.randomUUID(),
+                label: m?.label ?? '',
+                value: m?.value ?? '',
+              }))
+            : [],
         });
         if (fs && fs.length) {
           setFounders(
@@ -100,6 +114,24 @@ export default function StartupForm({ mode }) {
 
   const removeBacker = (b) => {
     set('investor_backers', startup.investor_backers.filter((x) => x !== b));
+  };
+
+  const addMetric = () => {
+    set('metrics_list', [...startup.metrics_list, emptyMetric()]);
+  };
+
+  const updateMetric = (localId, patch) => {
+    set(
+      'metrics_list',
+      startup.metrics_list.map((m) => (m._localId === localId ? { ...m, ...patch } : m))
+    );
+  };
+
+  const removeMetric = (localId) => {
+    set(
+      'metrics_list',
+      startup.metrics_list.filter((m) => m._localId !== localId)
+    );
   };
 
   const onLogo = async (e) => {
@@ -167,6 +199,12 @@ export default function StartupForm({ mode }) {
       const payload = {
         ...startup,
         investor_backers: startup.investor_backers || [],
+        metrics_list: (startup.metrics_list || [])
+          .map(({ label, value }) => ({
+            label: (label || '').trim(),
+            value: (value || '').trim(),
+          }))
+          .filter((m) => m.label || m.value),
       };
 
       if (isEdit) {
@@ -292,12 +330,49 @@ export default function StartupForm({ mode }) {
           />
         </Section>
 
-        {/* Metrics — single markdown field, user writes their own bullets */}
-        <Section title={STARTUP_LABELS.metrics}>
+        {/* Metrics — markdown bullets + structured label/value rows */}
+        <Section
+          title={STARTUP_LABELS.metrics}
+          right={
+            <button type="button" className="btn-secondary" onClick={addMetric}>
+              + Add metric
+            </button>
+          }
+        >
           <p className="mb-3 text-xs text-ia-muted">
-            Write the metrics as a bullet list. Add whatever's relevant — Revenue, Valuation,
-            Ask, MRR, GMV, Users — in whatever format suits the startup.
+            Add structured metrics below — any label, any value (Revenue, MRR, Users, NPS,
+            Burn, Runway…). You can also use the markdown editor for free-form bullets.
           </p>
+
+          {startup.metrics_list.length > 0 && (
+            <div className="mb-5 space-y-2">
+              {startup.metrics_list.map((m) => (
+                <div key={m._localId} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
+                  <input
+                    className="input"
+                    placeholder="Label (e.g. Revenue)"
+                    value={m.label}
+                    onChange={(e) => updateMetric(m._localId, { label: e.target.value })}
+                  />
+                  <input
+                    className="input"
+                    placeholder="Value (e.g. 6.7 L)"
+                    value={m.value}
+                    onChange={(e) => updateMetric(m._localId, { value: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => removeMetric(m._localId)}
+                    aria-label="Remove metric"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
           <MarkdownEditor
             value={startup.metrics}
             onChange={(v) => set('metrics', v)}

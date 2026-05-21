@@ -127,7 +127,7 @@ export default function StartupDetail() {
               )}
 
               <DetailBlock heading={STARTUP_LABELS.metrics}>
-                <MarkdownView md={metricsMarkdown(startup)} empty="—" />
+                <MetricsView startup={startup} />
               </DetailBlock>
 
               <DetailBlock heading={STARTUP_LABELS.moat}>
@@ -212,6 +212,29 @@ function metricsMarkdown(s) {
   if (s.valuation) lines.push(`- Valuation: ${s.valuation}`);
   if (s.ask) lines.push(`- Ask: ${s.ask}`);
   return lines.join('\n');
+}
+
+function MetricsView({ startup }) {
+  const list = Array.isArray(startup.metrics_list)
+    ? startup.metrics_list.filter((m) => m && (m.label || m.value))
+    : [];
+  const md = metricsMarkdown(startup);
+  if (list.length === 0 && !md) return <MarkdownView md="" empty="—" />;
+  return (
+    <div className="space-y-4">
+      {list.length > 0 && (
+        <dl className="grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-2">
+          {list.map((m, i) => (
+            <div key={i} className="flex items-baseline justify-between gap-4 border-b border-ia-line py-1.5">
+              <dt className="text-sm font-semibold text-ia-muted">{m.label || '—'}</dt>
+              <dd className="text-sm font-bold text-ia-ink">{m.value || '—'}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {md && <MarkdownView md={md} empty="—" />}
+    </div>
+  );
 }
 
 function FounderRow({ founder }) {

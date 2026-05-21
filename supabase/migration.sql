@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS "investors-website".startups (
   valuation TEXT,             -- legacy: superseded by `metrics`
   ask TEXT,                   -- legacy: superseded by `metrics`
   metrics TEXT,               -- markdown: user-authored bullet list of all metrics
+  metrics_list JSONB DEFAULT '[]'::jsonb,  -- structured metrics: [{ label, value }, ...]
   moat TEXT,                  -- markdown
   traction TEXT,              -- markdown
   description TEXT,           -- markdown (long-form company summary)
