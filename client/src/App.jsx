@@ -2,7 +2,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Home from './pages/Home.jsx';
-import Startups from './pages/Startups.jsx';
 import StartupDetail from './pages/StartupDetail.jsx';
 import AdminLogin from './pages/admin/Login.jsx';
 import AdminDashboard from './pages/admin/Dashboard.jsx';
@@ -19,7 +18,6 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/startups" element={<Startups />} />
           <Route path="/startups/:id" element={<StartupDetail />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -59,7 +57,7 @@ export default function App() {
 function NotFound() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ia-orange">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ia-brand">
         404
       </p>
       <h1 className="mt-3 text-5xl font-extrabold tracking-tighter-2">

@@ -5,11 +5,31 @@ import AdminTable from '../../components/AdminTable.jsx';
 import AdminTableSkeleton from '../../components/skeleton/AdminTableSkeleton.jsx';
 import { Highlight, SectionEyebrow } from '../../components/brand.jsx';
 
-const STAT_BAR_COLORS = ['bg-ia-blue', 'bg-ia-green', 'bg-ia-orange'];
+const STAT_BAR_COLORS = ['bg-ia-blue', 'bg-ia-green', 'bg-ia-brand'];
+const ROW_COUNT_KEY = 'adminDashboardRowCount';
+
+function readStoredRowCount() {
+  try {
+    const n = Number(sessionStorage.getItem(ROW_COUNT_KEY));
+    return Number.isFinite(n) && n >= 0 ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** Match shimmer rows to known cohort size (cached or in-memory). */
+function skeletonRowCount(startups, storedCount) {
+  if (startups.length > 0) return startups.length;
+  if (storedCount > 0) return storedCount;
+  // Loaded before with an empty cohort — no fake rows
+  if (sessionStorage.getItem(ROW_COUNT_KEY) !== null) return 0;
+  // First visit — short placeholder until count is known
+  return 3;
+}
 
 export default function AdminDashboard() {
   const [startups, setStartups] = useState([]);
-  const [rowCount, setRowCount] = useState(0);
+  const [rowCount, setRowCount] = useState(readStoredRowCount);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
@@ -21,6 +41,7 @@ export default function AdminDashboard() {
       const { data } = await api.get('/startups/all');
       setStartups(data);
       setRowCount(data.length);
+      sessionStorage.setItem(ROW_COUNT_KEY, String(data.length));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,6 +83,7 @@ export default function AdminDashboard() {
       setStartups((cur) => {
         const next = cur.filter((x) => x.id !== confirmDelete.id);
         setRowCount(next.length);
+        sessionStorage.setItem(ROW_COUNT_KEY, String(next.length));
         return next;
       });
       setConfirmDelete(null);
@@ -109,7 +131,7 @@ export default function AdminDashboard() {
         )}
 
         {loading ? (
-          <AdminTableSkeleton rows={startups.length || rowCount} />
+          <AdminTableSkeleton rows={skeletonRowCount(startups, rowCount)} />
         ) : (
           <AdminTable
             startups={startups}

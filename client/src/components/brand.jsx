@@ -1,4 +1,4 @@
-// Brand primitives — yellow highlighter, orange asterisk, numbered circle,
+// Brand primitives — red highlighter & accent asterisk, numbered circle,
 // IA logo, decorative dividers. Kept in one file because they're tiny.
 
 import iaLogo from '../assets/ia-logo.png';
@@ -73,7 +73,7 @@ export function IALogo({ className = '', theme = 'dark' }) {
 export function Spinner({ className = 'h-6 w-6' }) {
   return (
     <span
-      className={`ia-spin inline-block rounded-full border-2 border-ia-line border-t-ia-orange ${className}`}
+      className={`ia-spin inline-block rounded-full border-2 border-ia-line border-t-ia-brand ${className}`}
     />
   );
 }

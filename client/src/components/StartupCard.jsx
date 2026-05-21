@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function StartupCard({ startup }) {
-  const isPlaceholder = Boolean(startup.is_placeholder);
-  const detailPath = isPlaceholder ? '/startups' : `/startups/${startup.id}`;
+  const detailPath = `/startups/${startup.id}`;
   const hasCalendly = Boolean(startup.calendly_url?.trim());
   const preview = stripMd(startup.description);
 
@@ -21,7 +21,9 @@ export default function StartupCard({ startup }) {
           <h3 className="startup-card__title">{startup.name}</h3>
           {(startup.sector || startup.stage) && (
             <div className="startup-card__tags">
-              {startup.sector && <span className="badge">{startup.sector}</span>}
+              {startup.sector && (
+                <span className="badge-red">{startup.sector}</span>
+              )}
               {startup.stage && <span className="badge-stage">{startup.stage}</span>}
             </div>
           )}
@@ -59,8 +61,17 @@ export default function StartupCard({ startup }) {
 }
 
 function CardMedia({ url, name }) {
-  if (url) {
-    return <img src={url} alt="" className="startup-card__img" />;
+  const [failed, setFailed] = useState(false);
+
+  if (url && !failed) {
+    return (
+      <img
+        src={url}
+        alt=""
+        className="startup-card__img"
+        onError={() => setFailed(true)}
+      />
+    );
   }
   const initial = (name || '?').trim().charAt(0).toUpperCase();
   return (

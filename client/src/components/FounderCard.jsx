@@ -21,7 +21,7 @@ export default function FounderCard({ founder }) {
           href={founder.linkedin_url}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-ia-orange hover:text-ia-orange-2"
+          className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-ia-brand hover:text-ia-brand-2"
         >
           <LinkedInIcon /> LinkedIn
         </a>

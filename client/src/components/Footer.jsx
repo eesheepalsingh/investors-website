@@ -19,7 +19,7 @@ export default function Footer() {
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-white/85">
               <li>
-                <a href="/startups" className="transition hover:text-white">
+                <a href="/#featured" className="transition hover:text-white">
                   Browse startups
                 </a>
               </li>
@@ -49,7 +49,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
-            <Asterisk size={14} className="text-ia-orange" />
+            <Asterisk size={14} className="text-ia-brand" />
             <span>© {new Date().getFullYear()} India Accelerator. All rights reserved.</span>
           </div>
           <span>Awarded &quot;Best Accelerator of India&quot; by the Government of India, 2022.</span>

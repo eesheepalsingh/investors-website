@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/axios.js';
-import StartupGrid from '../components/StartupGrid.jsx';
+import {
+  countActiveFilters,
+  filterStartups,
+  startupFilterOptions,
+} from '../lib/filterStartups.js';
+import FeaturedStartupSlider from '../components/FeaturedStartupSlider.jsx';
+import StartupFilters from '../components/StartupFilters.jsx';
+import HomeHeroShowcase from '../components/HomeHeroShowcase.jsx';
 import {
   Asterisk,
   Highlight,
@@ -10,12 +17,30 @@ import {
 import StepStampCard from '../components/StepStampCard.jsx';
 import HomeCtaBanner from '../components/HomeCtaBanner.jsx';
 import { StartupCardSkeletonGrid } from '../components/skeleton/StartupCardSkeleton.jsx';
-import { withFeaturedPlaceholders } from '../data/featuredDummyStartups.js';
 
 export default function Home() {
   const [startups, setStartups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedSectors, setSelectedSectors] = useState([]);
+  const [selectedStages, setSelectedStages] = useState([]);
+  const [q, setQ] = useState('');
+
+  const { sectors, stages } = useMemo(() => startupFilterOptions(startups), [startups]);
+  const filtered = useMemo(
+    () => filterStartups(startups, { q, sectors: selectedSectors, stages: selectedStages }),
+    [startups, q, selectedSectors, selectedStages]
+  );
+  const activeFilterCount = useMemo(
+    () => countActiveFilters({ q, sectors: selectedSectors, stages: selectedStages }),
+    [q, selectedSectors, selectedStages]
+  );
+
+  const resetFilters = () => {
+    setSelectedSectors([]);
+    setSelectedStages([]);
+    setQ('');
+  };
 
   useEffect(() => {
     let alive = true;
@@ -29,82 +54,113 @@ export default function Home() {
     };
   }, []);
 
-  const featured = useMemo(() => withFeaturedPlaceholders(startups, 3), [startups]);
-
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-ia-line">
-        <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-24">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-4xl font-extrabold leading-[1.05] tracking-tighter-2 text-ia-ink sm:text-6xl md:text-7xl">
-              Meet the next wave of{' '}
-              <Highlight>India's boldest founders</Highlight>.
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ia-muted sm:text-lg">
-              Curated startups from India Accelerator's latest cohort. Explore
-              traction, view pitch decks, and book 1:1 time with founders —
-              all in one place.
-            </p>
-            <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <Link to="/startups" className="btn-primary">
-                Explore Startups →
-              </Link>
-              <a
-                href="https://indiaaccelerator.co"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-secondary"
-              >
-                About India Accelerator
-              </a>
+      <section className="hero-section relative overflow-hidden border-b border-ia-line">
+        <div className="hero-section__glow hero-section__glow--red" aria-hidden />
+        <div className="hero-section__glow hero-section__glow--soft" aria-hidden />
+
+        <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-14 sm:pb-20 sm:pt-20 lg:pt-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            <div className="text-center lg:text-left">
+              <SectionEyebrow>Investor portal</SectionEyebrow>
+              <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tighter-2 text-ia-ink sm:text-5xl lg:text-6xl xl:text-[3.35rem]">
+                Meet the next wave of{' '}
+                <Highlight>India's boldest founders</Highlight>.
+              </h1>
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ia-muted sm:text-lg lg:mx-0">
+                Curated startups from India Accelerator's latest cohort. Explore
+                traction, view pitch decks, and book 1:1 time with founders —
+                all in one place.
+              </p>
+              <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+                <a href="#featured" className="btn-primary">
+                  Explore Startups →
+                </a>
+                <a
+                  href="https://indiaaccelerator.co"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-secondary"
+                >
+                  About India Accelerator
+                </a>
+              </div>
+              <p className="hero-trust mx-auto mt-8 lg:mx-0">
+                <Asterisk size={14} className="shrink-0 text-ia-brand" />
+                Curated by India Accelerator's investment team
+              </p>
             </div>
+
+            <HomeHeroShowcase startups={startups} />
           </div>
         </div>
       </section>
-
-  
 
       {/* FEATURED STARTUPS */}
-      <section className="border-b border-ia-line bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="mb-10 flex items-end justify-between">
-            <div>
-              <SectionEyebrow>Featured</SectionEyebrow>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-5xl">
-                Startups we're <Highlight>proud to back</Highlight>.
-              </h2>
-            </div>
-            <Link
-              to="/startups"
-              className="hidden text-sm font-semibold text-ia-ink transition hover:text-ia-muted sm:inline-flex"
-            >
-              View all →
-            </Link>
+      <section id="featured" className="border-b border-ia-line bg-white scroll-mt-24">
+        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24">
+          <div className="mb-10">
+            <SectionEyebrow>Featured</SectionEyebrow>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-5xl">
+              Startups we're <Highlight>proud to back</Highlight>.
+            </h2>
+            <p className="mt-3 max-w-lg text-base text-ia-muted">
+              Hand-picked from the latest cohort — traction, decks, and founder
+              access in one click.
+            </p>
           </div>
 
-          {loading && (
-            <StartupCardSkeletonGrid count={3} />
-          )}
+          {loading && <StartupCardSkeletonGrid count={3} />}
           {error && <ErrorBlock message={error} />}
-          {!loading && !error && <StartupGrid startups={featured} />}
+          {!loading && !error && (
+            <div className="featured-cohort w-full">
+              <StartupFilters
+                q={q}
+                selectedSectors={selectedSectors}
+                selectedStages={selectedStages}
+                sectorOptions={sectors}
+                stageOptions={stages}
+                onQChange={setQ}
+                onSectorsChange={setSelectedSectors}
+                onStagesChange={setSelectedStages}
+                onReset={resetFilters}
+                activeCount={activeFilterCount}
+              />
+              {activeFilterCount > 0 && (
+                <p className="-mt-4 mb-8 text-sm text-ia-muted">
+                  Showing {filtered.length} of {startups.length} startups
+                </p>
+              )}
+              {filtered.length === 0 ? (
+                <div className="card mx-auto max-w-md p-10 text-center">
+                  <p className="text-ia-muted">No startups match your filters.</p>
+                  <button type="button" onClick={resetFilters} className="btn-secondary mt-4">
+                    Clear filters
+                  </button>
+                </div>
+              ) : (
+                <FeaturedStartupSlider startups={filtered} />
+              )}
+            </div>
+          )}
 
-          <div className="mt-8 flex justify-center sm:hidden">
-            <Link to="/startups" className="btn-secondary">
-              View all startups →
-            </Link>
-          </div>
         </div>
       </section>
 
-        {/* HOW IT WORKS */}
-        <section className="border-b border-ia-line bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-20">
+      {/* HOW IT WORKS */}
+      <section className="border-b border-ia-line bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24">
           <div className="text-center">
             <SectionEyebrow>How it works</SectionEyebrow>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-5xl">
-              Three steps to your next <Highlight>great investment</Highlight>.
+              Three steps to your next{' '}
+              <Highlight>great investment</Highlight>.
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-ia-muted">
+              From browsing the cohort to booking your first founder call.
+            </p>
           </div>
 
           <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-12 px-3 py-2 md:grid-cols-3 md:gap-10">
@@ -120,10 +176,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* WHAT YOU GET — value props with asterisks (brand pattern) */}
+
+      {/* WHAT YOU GET */}
       <section className="border-b border-ia-line bg-[#f3f3f3]">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <SectionEyebrow>What investors get</SectionEyebrow>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tightish sm:text-5xl">
@@ -136,7 +193,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-5">
               <ValueProp
                 title="Traction at a glance"
                 desc="Revenue, stage, ask, and current backers — surfaced upfront on every startup card. No deck downloads required."
@@ -161,10 +218,10 @@ export default function Home() {
 
 function ValueProp({ title, desc }) {
   return (
-    <div className="flex gap-4">
-      <Asterisk size={28} className="mt-1 shrink-0 text-ia-orange" />
+    <div className="value-prop-card">
+      <Asterisk size={24} className="mt-0.5 shrink-0 text-ia-brand" />
       <div>
-        <h3 className="text-2xl font-bold text-ia-ink">{title}</h3>
+        <h3 className="text-xl font-bold text-ia-ink sm:text-2xl">{title}</h3>
         <p className="mt-2 text-base leading-relaxed text-ia-muted">{desc}</p>
       </div>
     </div>

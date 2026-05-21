@@ -4,6 +4,7 @@ import { api } from '../lib/axios.js';
 import CalendlyEmbed from '../components/CalendlyEmbed.jsx';
 import MarkdownView from '../components/MarkdownView.jsx';
 import { Highlight } from '../components/brand.jsx';
+import { STARTUP_LABELS } from '../data/startupLabels.js';
 import StartupDetailSkeleton from '../components/skeleton/StartupDetailSkeleton.jsx';
 
 export default function StartupDetail() {
@@ -34,8 +35,8 @@ export default function StartupDetail() {
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
         <h1 className="text-4xl font-extrabold">Startup unavailable</h1>
         <p className="mt-3 text-ia-muted">{error || 'Not found.'}</p>
-        <Link to="/startups" className="btn-primary mt-8">
-          ← Back to startups
+        <Link to="/" className="btn-primary mt-8">
+          ← Back to home
         </Link>
       </div>
     );
@@ -49,8 +50,8 @@ export default function StartupDetail() {
       {/* HEADER */}
       <section className="border-b border-ia-line bg-[#f3f3f3]">
         <div className="mx-auto max-w-6xl px-6 py-12">
-          <Link to="/startups" className="btn-ghost -ml-3 mb-6">
-            ← Back to all startups
+          <Link to="/#featured" className="btn-ghost -ml-3 mb-6">
+            ← Back to startups
           </Link>
 
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
@@ -98,7 +99,7 @@ export default function StartupDetail() {
             {/* Left: founders */}
             <aside>
               <h2 className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-ia-muted">
-                Team
+                {STARTUP_LABELS.founders}
               </h2>
               {founders.length === 0 ? (
                 <p className="text-sm text-ia-muted">No founders listed yet.</p>
@@ -113,29 +114,32 @@ export default function StartupDetail() {
 
             {/* Right: content */}
             <div className="space-y-10">
-              {/* Sector + Description */}
-              <DetailBlock heading="Sector" value={startup.sector}>
+              {startup.sector && (
+                <DetailBlock heading={STARTUP_LABELS.sector} value={startup.sector} />
+              )}
+
+              <DetailBlock heading={STARTUP_LABELS.description}>
                 <MarkdownView md={startup.description} empty="No description provided." />
               </DetailBlock>
 
-              {/* Stage + metrics (markdown, user-authored) */}
-              <DetailBlock heading="Stage" value={startup.stage}>
+              {startup.stage && (
+                <DetailBlock heading={STARTUP_LABELS.stage} value={startup.stage} />
+              )}
+
+              <DetailBlock heading={STARTUP_LABELS.metrics}>
                 <MarkdownView md={metricsMarkdown(startup)} empty="—" />
               </DetailBlock>
 
-              {/* MOAT */}
-              <DetailBlock heading="MOAT">
+              <DetailBlock heading={STARTUP_LABELS.moat}>
                 <MarkdownView md={startup.moat} empty="—" />
               </DetailBlock>
 
-              {/* Traction */}
-              <DetailBlock heading="Traction">
+              <DetailBlock heading={STARTUP_LABELS.traction}>
                 <MarkdownView md={startup.traction} empty="—" />
               </DetailBlock>
 
-              {/* Investor backers */}
               {backers.length > 0 && (
-                <DetailBlock heading="Investor Backers">
+                <DetailBlock heading={STARTUP_LABELS.investorBackers}>
                   <div className="flex flex-wrap gap-2">
                     {backers.map((b) => (
                       <span key={b} className="badge">{b}</span>
@@ -186,10 +190,14 @@ function DetailBlock({ heading, value, children }) {
     <div>
       <h3 className="text-base font-bold text-ia-ink">
         {heading}
-        {value && <span className="text-ia-muted"> : </span>}
-        {value && <span className="text-ia-ink">{value}</span>}
+        {value != null && value !== '' && (
+          <>
+            <span className="text-ia-muted"> : </span>
+            <span className="text-ia-ink">{value}</span>
+          </>
+        )}
       </h3>
-      <div className="mt-3">{children}</div>
+      {children != null && <div className="mt-3">{children}</div>}
     </div>
   );
 }

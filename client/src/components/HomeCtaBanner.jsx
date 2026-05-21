@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Highlight } from './brand.jsx';
 import cardTexture from '../assets/card-texture.png';
 import ctaVisual from '../assets/cta-banner.png';
@@ -18,11 +17,11 @@ export default function HomeCtaBanner() {
               Ready to meet the <Highlight>cohort?</Highlight>
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-ia-muted">
-              Browse all startups and book your first founder call.
+              Browse the cohort and book your first founder call.
             </p>
-            <Link to="/startups" className="btn-primary mt-8 inline-flex">
+            <a href="/#featured" className="btn-primary mt-8 inline-flex">
               Explore Startups →
-            </Link>
+            </a>
           </div>
 
           <div className="cta-stamp-banner__visual hidden lg:flex" aria-hidden>

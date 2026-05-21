@@ -4,6 +4,7 @@ import { api } from '../../lib/axios.js';
 import FounderFieldGroup from '../../components/FounderFieldGroup.jsx';
 import MarkdownEditor from '../../components/MarkdownEditor.jsx';
 import { Highlight, SectionEyebrow } from '../../components/brand.jsx';
+import { STARTUP_LABELS } from '../../data/startupLabels.js';
 import StartupFormSkeleton from '../../components/skeleton/StartupFormSkeleton.jsx';
 
 const emptyStartup = {
@@ -221,7 +222,8 @@ export default function StartupForm({ mode }) {
               )}
             </h1>
             <p className="mt-2 text-sm text-ia-muted">
-              Rich-text fields (Description, MOAT, Traction) support markdown — use the toolbar
+              Rich-text fields ({STARTUP_LABELS.description}, {STARTUP_LABELS.moat},{' '}
+              {STARTUP_LABELS.traction}) support markdown — use the toolbar
               or write it directly. Switch to <span className="font-semibold text-ia-ink">Preview</span> to
               see how it'll render.
             </p>
@@ -247,10 +249,10 @@ export default function StartupForm({ mode }) {
             <Field label="Startup name *" error={fieldErrors.name}>
               <input className="input" value={startup.name} onChange={(e) => set('name', e.target.value)} required />
             </Field>
-            <Field label="Sector">
+            <Field label={STARTUP_LABELS.sector}>
               <input className="input" placeholder="Space-Tech, FinTech, HealthTech…" value={startup.sector} onChange={(e) => set('sector', e.target.value)} />
             </Field>
-            <Field label="Stage">
+            <Field label={STARTUP_LABELS.stage}>
               <input className="input" placeholder="Pre-Seed, Seed, Series A…" value={startup.stage} onChange={(e) => set('stage', e.target.value)} />
             </Field>
             <Field label="Visible on public site">
@@ -277,10 +279,10 @@ export default function StartupForm({ mode }) {
         </Section>
 
         {/* Description — markdown */}
-        <Section title="Description">
+        <Section title={STARTUP_LABELS.description}>
           <p className="mb-3 text-xs text-ia-muted">
-            The long-form company summary that appears below the Sector heading on the
-            public detail page.
+            Long-form company summary — shown on the public detail page under{' '}
+            <span className="font-semibold text-ia-ink">{STARTUP_LABELS.description}</span>.
           </p>
           <MarkdownEditor
             value={startup.description}
@@ -291,7 +293,7 @@ export default function StartupForm({ mode }) {
         </Section>
 
         {/* Metrics — single markdown field, user writes their own bullets */}
-        <Section title="Metrics">
+        <Section title={STARTUP_LABELS.metrics}>
           <p className="mb-3 text-xs text-ia-muted">
             Write the metrics as a bullet list. Add whatever's relevant — Revenue, Valuation,
             Ask, MRR, GMV, Users — in whatever format suits the startup.
@@ -305,7 +307,7 @@ export default function StartupForm({ mode }) {
         </Section>
 
         {/* MOAT — markdown */}
-        <Section title="MOAT">
+        <Section title={STARTUP_LABELS.moat}>
           <p className="mb-3 text-xs text-ia-muted">
             What's defensible about this startup. Use bullet points for clarity.
           </p>
@@ -318,7 +320,7 @@ export default function StartupForm({ mode }) {
         </Section>
 
         {/* Traction — markdown */}
-        <Section title="Traction">
+        <Section title={STARTUP_LABELS.traction}>
           <p className="mb-3 text-xs text-ia-muted">
             Recent milestones, contracts, pilots, partnerships, revenue moments.
           </p>
@@ -331,7 +333,7 @@ export default function StartupForm({ mode }) {
         </Section>
 
         {/* Investor backers */}
-        <Section title="Investor backers">
+        <Section title={STARTUP_LABELS.investorBackers}>
           <div className="flex flex-wrap items-center gap-2">
             {startup.investor_backers.map((b) => (
               <span key={b} className="badge gap-1.5">
@@ -437,7 +439,7 @@ export default function StartupForm({ mode }) {
 
         {/* Founders */}
         <Section
-          title="Founders"
+          title={STARTUP_LABELS.founders}
           right={
             <button
               type="button"

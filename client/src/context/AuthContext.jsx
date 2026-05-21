@@ -60,7 +60,7 @@ export function ProtectedRoute({ children }) {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <span className="ia-spin h-8 w-8 rounded-full border-2 border-ia-line border-t-ia-orange" />
+        <span className="ia-spin h-8 w-8 rounded-full border-2 border-ia-line border-t-ia-brand" />
       </div>
     );
   }

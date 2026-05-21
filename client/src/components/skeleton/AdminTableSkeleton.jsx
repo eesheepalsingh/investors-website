@@ -28,7 +28,9 @@ function SkeletonRow() {
   );
 }
 
-export default function AdminTableSkeleton({ rows = 0 }) {
+export default function AdminTableSkeleton({ rows = 3 }) {
+  const count = Math.max(0, rows);
+
   return (
     <div className="card overflow-hidden" aria-busy="true" aria-label="Loading startups">
       <div className="overflow-x-auto">
@@ -42,10 +44,16 @@ export default function AdminTableSkeleton({ rows = 0 }) {
               <th className="px-5 py-3.5 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-ia-line">
-            {Array.from({ length: rows }).map((_, i) => (
-              <SkeletonRow key={i} />
-            ))}
+          <tbody className="divide-y divide-ia-line bg-white">
+            {count === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-5 py-10">
+                  <Shimmer className="mx-auto h-4 w-48 max-w-full rounded" />
+                </td>
+              </tr>
+            ) : (
+              Array.from({ length: count }, (_, i) => <SkeletonRow key={i} />)
+            )}
           </tbody>
         </table>
       </div>
