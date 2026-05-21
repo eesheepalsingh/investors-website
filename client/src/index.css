@@ -524,39 +524,26 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Hero highlight chips (below CTA) — single row, horizontal scroll */
+/* Hero highlight chips (below CTA) — slow infinite marquee */
 .hero-highlights {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
+  position: relative;
   align-self: stretch;
-  gap: 0.5rem;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   margin: 1.5rem 0 0;
-  padding: 0 0 0.35rem;
-  list-style: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--ia-line-2) transparent;
-}
-
-.hero-highlights::-webkit-scrollbar {
-  height: 4px;
-}
-
-.hero-highlights::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: var(--ia-line-2);
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
 }
 
 @media (min-width: 640px) {
   .hero-highlights {
-    gap: 0.625rem;
     margin-top: 2rem;
   }
 }
@@ -564,6 +551,55 @@ h1, h2, h3, h4 {
 @media (min-width: 1024px) {
   .hero-highlights {
     margin-top: 2.5rem;
+  }
+}
+
+.hero-highlights__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  width: max-content;
+  margin: 0;
+  padding: 0.15rem 0;
+  list-style: none;
+  animation: hero-highlights-marquee 32s linear infinite;
+  will-change: transform;
+}
+
+.hero-highlights:hover .hero-highlights__track {
+  animation-play-state: paused;
+}
+
+@media (min-width: 640px) {
+  .hero-highlights__track {
+    gap: 0.625rem;
+  }
+}
+
+@keyframes hero-highlights-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-highlights {
+    mask-image: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ia-line-2) transparent;
+  }
+
+  .hero-highlights__track {
+    animation: none;
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 0.35rem;
   }
 }
 
