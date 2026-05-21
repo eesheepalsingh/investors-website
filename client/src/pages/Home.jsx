@@ -9,6 +9,7 @@ import {
 import FeaturedStartupSlider from '../components/FeaturedStartupSlider.jsx';
 import StartupFilters from '../components/StartupFilters.jsx';
 import HomeHeroShowcase from '../components/HomeHeroShowcase.jsx';
+import HeroHighlights from '../components/HeroHighlights.jsx';
 import {
   Asterisk,
   Highlight,
@@ -95,16 +96,7 @@ export default function Home() {
                   <span className="hidden sm:inline">About India Accelerator</span>
                 </a>
               </div>
-              <ul className="hero-highlights">
-                {HERO_HIGHLIGHTS.map((label) => (
-                  <li key={label} className="hero-highlights__item">
-                    <span className="hero-trust" title={label}>
-                      <Asterisk size={14} className="hero-trust__icon shrink-0 text-ia-brand" />
-                      <span className="hero-trust__text">{label}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <HeroHighlights items={HERO_HIGHLIGHTS} />
             </div>
 
             <HomeHeroShowcase startups={startups} />
