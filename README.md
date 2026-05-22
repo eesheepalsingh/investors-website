@@ -12,6 +12,7 @@ Built with **React 18 + Vite + Tailwind**, **Node + Express**, and **Supabase** 
 
 ## Project structure
 
+
 ```
 /client       React + Vite frontend (Tailwind CSS, React Router v6)
 /server       Express REST API (Supabase service-role client, multer uploads)
