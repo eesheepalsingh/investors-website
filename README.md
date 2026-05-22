@@ -2,6 +2,7 @@
 
 A full-stack web app for India Accelerator's investor demo events.
 
+
 - **Public site** — Investors browse the cohort and book 1:1 meetings via Calendly.
 - **Admin portal** — Authenticated admins manage startup listings and founders.
 
@@ -10,6 +11,7 @@ Built with **React 18 + Vite + Tailwind**, **Node + Express**, and **Supabase** 
 ---
 
 ## Project structure
+
 
 ```
 /client       React + Vite frontend (Tailwind CSS, React Router v6)
