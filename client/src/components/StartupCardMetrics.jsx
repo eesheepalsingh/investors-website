@@ -8,10 +8,15 @@ export default function StartupCardMetrics({ startup }) {
     <div className="startup-card__metrics" aria-label="Key metrics">
       {boxes.map((box, i) => (
         <div
-          key={`${box.field}-${i}-${box.text}`}
-          className={`startup-card__metric startup-card__metric--${box.field}`}
+          key={`${box.label}-${box.value}-${i}`}
+          className="startup-card__metric"
         >
-          <p className="startup-card__metric-text">{box.text}</p>
+          {box.label ? (
+            <p className="startup-card__metric-label">{box.label}</p>
+          ) : null}
+          {box.value ? (
+            <p className="startup-card__metric-value">{box.value}</p>
+          ) : null}
         </div>
       ))}
     </div>

@@ -1,8 +1,8 @@
 const CARD_METRIC_BOX_LIMIT = 4;
 
 /**
- * Card boxes from admin `metrics_list` only.
- * Per row: left input (Label) → one box, right input (Value) → next box. Max 4 boxes total.
+ * Card metric boxes from admin `metrics_list`.
+ * Each row → one box: label (1st input) on top, value (2nd input) below.
  */
 export function getCardMetricBoxes(startup, limit = CARD_METRIC_BOX_LIMIT) {
   if (!Array.isArray(startup?.metrics_list)) return [];
@@ -12,16 +12,11 @@ export function getCardMetricBoxes(startup, limit = CARD_METRIC_BOX_LIMIT) {
   for (const m of startup.metrics_list) {
     const label = String(m?.label ?? '').trim();
     const value = String(m?.value ?? '').trim();
+    if (!label && !value) continue;
 
-    if (label) {
-      boxes.push({ text: label, field: 'label' });
-      if (boxes.length >= limit) return boxes.slice(0, limit);
-    }
-    if (value) {
-      boxes.push({ text: value, field: 'value' });
-      if (boxes.length >= limit) return boxes.slice(0, limit);
-    }
+    boxes.push({ label, value });
+    if (boxes.length >= limit) break;
   }
 
-  return boxes.slice(0, limit);
+  return boxes;
 }

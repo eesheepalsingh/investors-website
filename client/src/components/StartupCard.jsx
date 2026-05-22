@@ -20,7 +20,7 @@ export default function StartupCard({ startup }) {
       </Link>
 
       <div className="startup-card__content">
-        <Link to={detailPath} className="startup-card__main block min-w-0 flex-1">
+        <Link to={detailPath} className="startup-card__main block min-w-0">
           <h3 className="startup-card__title">{startup.name}</h3>
           {(startup.sector || startup.stage) && (
             <div className="startup-card__tags">
@@ -30,7 +30,6 @@ export default function StartupCard({ startup }) {
               {startup.stage && <span className="badge-stage">{startup.stage}</span>}
             </div>
           )}
-          <StartupCardMetrics startup={startup} />
           {preview ? (
             <p className={`startup-card__desc ${cardMetricBoxes.length ? 'startup-card__desc--with-metrics' : ''}`}>
               {preview}
@@ -42,6 +41,7 @@ export default function StartupCard({ startup }) {
               </p>
             )
           )}
+          <StartupCardMetrics startup={startup} />
         </Link>
 
         <footer className="startup-card__footer">

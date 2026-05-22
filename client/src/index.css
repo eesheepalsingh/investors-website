@@ -234,7 +234,7 @@ h1, h2, h3, h4 {
     @apply flex h-full w-full items-center justify-center bg-ia-cream text-4xl font-extrabold tracking-tightish text-ia-muted-2;
   }
   .startup-card__content {
-    @apply flex min-h-0 flex-1 flex-col px-5 pb-5 pt-4;
+    @apply flex min-h-0 flex-1 flex-col gap-4 px-5 pb-5 pt-4;
   }
   .startup-card__title {
     @apply text-lg font-bold leading-snug tracking-tightish text-ia-ink;
@@ -247,10 +247,13 @@ h1, h2, h3, h4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
     margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
   }
   .startup-card__metric {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
     min-height: 2.75rem;
     border-radius: 0.625rem;
     border: 1px solid var(--ia-line);
@@ -258,25 +261,33 @@ h1, h2, h3, h4 {
     padding: 0.65rem 0.75rem;
     min-width: 0;
   }
-  .startup-card__metric-text {
+  .startup-card__metric-label {
     margin: 0;
     font-size: 0.9375rem;
-    font-weight: 400;
-    line-height: 1.35;
+    font-weight: 700;
+    line-height: 1.3;
     color: var(--ia-ink);
+    word-break: break-word;
+  }
+  .startup-card__metric-value {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ia-muted);
     word-break: break-word;
   }
   .startup-card__desc {
     @apply mt-3 line-clamp-3 text-sm leading-relaxed text-ia-muted;
   }
   .startup-card__desc--with-metrics {
-    @apply mt-2.5 line-clamp-2;
+    @apply mt-2.5 line-clamp-3;
   }
   .startup-card__desc--empty {
     @apply italic text-ia-muted-2;
   }
   .startup-card__footer {
-    @apply mt-auto flex items-center gap-3 border-t border-ia-line pt-4;
+    @apply mt-auto flex shrink-0 items-center gap-3 border-t border-ia-line pt-4;
   }
   .startup-card__book-btn {
     @apply btn-primary min-w-0 flex-1 justify-center px-4 py-2.5 text-xs sm:text-sm;
